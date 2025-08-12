@@ -6,7 +6,7 @@ const path = "notas.txt";
 const model = new Product();
 
 model.addProduct({
-    title: 'Teclado', 
+    name: 'Teclado', 
     description: 'Teclado Mecánico', 
     price: 25000, 
     stock: 25

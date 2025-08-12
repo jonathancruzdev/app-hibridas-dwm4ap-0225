@@ -12,6 +12,13 @@ class Product {
         const id = crypto.randomUUID();
         console.log(id);
     }
+    getProducts(){
+
+    }
+    getProductById(id){
+        
+    }
+
 }
 
 module.exports = Product;
