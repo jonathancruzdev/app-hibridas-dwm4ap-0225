@@ -23,5 +23,6 @@ class Alumno {
         this.edad = edad;
     }
 }
+// Está variable solo se podrá usar en el archivo Alumno.js
 let algo = "texto";
 module.exports = Alumno;
