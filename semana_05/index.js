@@ -17,6 +17,9 @@ const app = express();
 
 app.use( express.json() );
 
+app.use('/', express.static('public'));
+
+
 app.get('/', (request, response) => {
     response.send('<h1> API REST </h1>');
 })
