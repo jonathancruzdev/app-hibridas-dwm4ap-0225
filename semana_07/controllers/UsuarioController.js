@@ -1,11 +1,33 @@
-//const User = require('../models/UsuarioModel.js');
 import User from '../models/UsuarioModel.js'
+import bcrypt from 'bcrypt';
+
+const User = require('../models/UsuarioModel.js');
+const bcrypt = require('bcrypt');
 
 const newUser = async( request, response ) =>{
     const { nombre, email, password, foto} = request.body;
-    const usuario = new User({ nombre, email, password, foto});
-    const data = await usuario.save();
-    response.status(201).json({ msg:"ok", data});
+    
+    if( !nombre || !email || !password){
+        response.status(400).json({ msg:"Falan campos obligatorios"});
+    }
+    // Verificar que el email no exista
+    const user = await User.findOne( { email: email }  );
+    if( user) {
+        response.status(400).json({ msg:"Ya tenemos una cuenta con este email"});
+        return;
+    }
+   
+   try {
+        const passwordHash = await bcrypt.hash(password, 5);
+
+        const usuario = new User({ nombre, email, password: passwordHash, foto});
+        const data = await usuario.save();
+        response.status(201).json({ msg:"ok", data});
+   } catch (error) {
+        response.status(500).json({ msg:"No se pudo guardar el usuario"});
+        console.error( error);
+   }
+
 }
 
 const listUsers = async (request, response) =>{
