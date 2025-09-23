@@ -1,8 +1,10 @@
 import User from '../models/UsuarioModel.js'
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt'
+import dotenv from 'dotenv';
+import jsonwebtoken from 'jsonwebtoken';
 
-const User = require('../models/UsuarioModel.js');
-const bcrypt = require('bcrypt');
+dotenv.config();
+const SECRET_KEY = process.env.SECRET_KEY;
 
 const newUser = async( request, response ) =>{
     const { nombre, email, password, foto} = request.body;
@@ -67,8 +69,30 @@ const updateUserById = async( request, response) =>{
     }
 }
 
+const auth = async(request, response) => {
+    const { email, password } = request.body;
+    const usuario = await User.findOne({ email: email});
+    if( !usuario){
+        response.status(404).json({ msg: "Email invalido" });
+    }
+
+    const esValido = await bcrypt.compare( password, usuario.password );
+    
+    if( !esValido){
+        response.status(404).json({ msg: 'Contaseña Invalida'});
+    }
+    
+    const data = {
+        id: usuario._id,
+        email: usuario.email
+    };
+
+    const jwt = jsonwebtoken.sign( data, SECRET_KEY, { expiresIn: '1h'});
+    
+    response.status(200).json({ msg: 'Ok', jwt: jwt});
+}
+
 export { 
     newUser, listUsers, 
-    getUserById, deleteUserById, updateUserById 
+    getUserById, deleteUserById, updateUserById, auth 
 };
-//module.exports = { newUser, listUsers }
