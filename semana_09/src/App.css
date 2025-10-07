@@ -4,7 +4,24 @@
   padding: 2rem;
   text-align: center;
 }
+.listado {
+  border: 1px solid rebeccapurple;
+  padding: 10px;
+}
 
+.flex {
+  padding-top: 16px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.card {
+  border: 0.5px solid snow;
+  border-radius: 5px;
+  padding: 10px;
+  height: 200px;
+  width: 100px;
+}
 .logo {
   height: 6em;
   padding: 1.5em;
