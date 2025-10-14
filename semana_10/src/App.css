@@ -68,10 +68,9 @@ form {
 }
 
 form input {
-
   flex-grow: 1;
   border-radius: 100vh;
-  padding: .3rem 1rem;
+  padding: .8rem 1rem;
   border: 2px solid var(--app-grey);
 }
 

@@ -1,12 +1,22 @@
 
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState } from 'react'
 import './App.css'
 import Header from './components/Header'
 import Nav from './components/Nav' 
 import Tareas from './components/Tareas'
 import Tarea from './components/Tarea'
 import Footer from './components/Footer'
+// Repaso de destructuración
+const persona = {nombre: 'Juan', edad: 27, fn: function(){ console.log('Hola')}};
+const {nombre, edad, fn } = persona;
+console.log(nombre, edad, fn);
+//                     0             1              2          3
+const materias = ['Maquetado', 'Programación I', 'PWA', ()=>console.log('hola') ];
+const [m1, m2, m3, fn2] =  materias;
+console.log(m1, m2)
+fn2();
+
+
 
 function App() {
   const usuario = 'Jonathan';
@@ -18,8 +28,19 @@ function App() {
     {id: 3, descripcion: 'Mirar una serie', fecha: '14-10-2025'},
   ]
 
-  const manejadorSubmit = () => {
+  const [ descripcion, setDescripcion] = useState('');
+  const [ tareas, setTareas] = useState(lista);
 
+  const manejadorSubmit = (event) => {
+    event.preventDefault();
+    //const descripcion = 'Tarea de ejemplo';
+    const fecha = new Date().toLocaleDateString();
+    const id = tareas.length + 1;
+    const tarea = { id, descripcion, fecha};
+    console.log(tarea);
+    //             estado  , nuevo    
+    setTareas( [ ...tareas, tarea ] );
+    setDescripcion('');
   }
   return (
     <>
@@ -31,14 +52,23 @@ function App() {
     
 
         <form onSubmit={manejadorSubmit} className="nueva-tarea">
-          <input type="text" name="nueva" id="" placeholder='Nueva Tarea'/>
+          <input
+            onChange={ e => setDescripcion(e.target.value)  }
+            value={descripcion} 
+            type="text" 
+            name="nueva"
+            placeholder='Nueva Tarea'
+            required
+            />
           <button  type='submit' className=''><i className="fa-solid fa-pencil"></i> Crear</button>
         </form>
         <Tareas>
           {
-            lista.map( ( item) =>  <Tarea key={item.id} descripcion={item.descripcion} fecha={item.fecha} />)
+            tareas.map( ( item) =>  <Tarea key={item.id} descripcion={item.descripcion} fecha={item.fecha} />)
           }
         </Tareas>
+        <h2>Tareas Pendientes <span> { tareas.length }</span></h2>
+
       </main>
       <Footer descripcion="DV | ToDo APP" />
     </>
