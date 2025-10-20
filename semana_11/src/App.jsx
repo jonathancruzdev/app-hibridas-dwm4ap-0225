@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import Header from './components/Header'
 import Nav from './components/Nav' 
@@ -20,16 +20,24 @@ fn2();
 
 function App() {
   const usuario = 'Jonathan';
-  // Definir un array de tareas
-  // Renderizarlo dentro de <Tareas> </Tareas>
-  const lista = [
-    {id: 1, descripcion: 'Comprar una PS2', fecha: '15-10-2025'},
-    {id: 2, descripcion: 'Llevar Laila al Veterinario', fecha: '14-10-2025'},
-    {id: 3, descripcion: 'Mirar una serie', fecha: '14-10-2025'},
-  ]
+  const api = 'https://apitaskdwm4ap-5ml6.onrender.com/api'
+  const endPoint = `${api}/tasks`;
+
+  // setInterval( () => {  }, 1000);
+
+  useEffect( () =>  {
+    getTasks();
+  }, [] );
+
+  const getTasks = async () => {
+    const resp = await fetch(endPoint);
+    const data = await resp.json();
+    console.log( data );
+    setTareas( data.data  );
+  }
 
   const [ descripcion, setDescripcion] = useState('');
-  const [ tareas, setTareas] = useState(lista);
+  const [ tareas, setTareas] = useState([]);
 
   const manejadorSubmit = (event) => {
     event.preventDefault();
@@ -64,7 +72,7 @@ function App() {
         </form>
         <Tareas>
           {
-            tareas.map( ( item) =>  <Tarea key={item.id} descripcion={item.descripcion} fecha={item.fecha} />)
+            tareas.map( ( item) =>  <Tarea key={item._id} descripcion={item.descripcion} fecha={item.fecha} />)
           }
         </Tareas>
         <h2>Tareas Pendientes <span> { tareas.length }</span></h2>
