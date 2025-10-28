@@ -7,7 +7,7 @@ import { useState, useEffect, use } from 'react'
 
 const Home = () => {
 
-    const api = 'http://10.21.0.51:5000/api';
+    const api = 'http://10.21.23.10:5000/api';
     const endPoint = `${api}/tasks`;
 
   // setInterval( () => {  }, 1000);
@@ -16,11 +16,21 @@ const Home = () => {
   }, [] );
 
   const getTasks = async () => {
-    const resp = await fetch(endPoint);
-    const data = await resp.json();
-    console.log( data );
-    setTareas( data.data  );
-    setLoading(false);
+    try {
+      const resp = await fetch(endPoint);
+      const data = await resp.json();
+      console.log( data );
+      setTareas( data.data  );
+      setLoading(false);
+      
+    } catch (error) {
+        console.error( { error});
+        alert('Error al cargar las Tareas');
+    } finally {
+      setLoading(false);
+
+    }
+
   }
 
   const [ descripcion, setDescripcion] = useState('');
