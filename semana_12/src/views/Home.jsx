@@ -7,7 +7,7 @@ import { useState, useEffect, use } from 'react'
 
 const Home = () => {
 
-    const api = 'http://10.21.23.10:5000/api';
+    const api = 'http://10.21.23.11:5000/api';
     const endPoint = `${api}/tasks`;
 
   // setInterval( () => {  }, 1000);

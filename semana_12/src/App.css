@@ -51,10 +51,27 @@ nav .user-info button {
   font-weight: 400;
 }
 
+.menu {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.menu li a {
+  text-decoration: none;
+  color: var(--lila);
+}
+
+.menu li a:hover {
+  border-bottom: 2px solid #FFF;
+  padding-bottom: 5px;
+}
+
 a.active {
   font-weight: 600;
-  color: #FFF;
-  text-decoration: none;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #FFF;
 }
 
 .container {
