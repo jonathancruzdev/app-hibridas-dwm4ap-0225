@@ -12,9 +12,9 @@ const Register = () =>{
         setUser( {...user, [ name ] : value } );
     }
     // Realizar el fetch a la API para crear el usuario POST
-    // http://10.21.23.11:5000/api/users
-    const onSubmit = async () => {
-        const endPoint = 'http://10.21.23.11:5000/api/users';
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        const endPoint = 'http://127.0.0.1:5000/api/user';
         const option = {
             method: 'POST',
             headers: {
@@ -29,6 +29,7 @@ const Register = () =>{
 
         const response = await fetch(endPoint, option);
         const data = await response.json();
+        console.log(data);
     }
     return (
         <>
