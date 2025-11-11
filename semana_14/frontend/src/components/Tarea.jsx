@@ -1,6 +1,6 @@
-const Tarea = ({id, descripcion, fecha}) => {
+const Tarea = ({id, descripcion, completada, usuario }) => {
 
-    const fechaFormat = new Date( fecha).toLocaleDateString();
+    const icon = completada ? '✔' : '🕐';
     
     return (
         <li className="tarea">
@@ -8,8 +8,8 @@ const Tarea = ({id, descripcion, fecha}) => {
                 <i className="fa-solid fa-circle-check"></i>
             </button>
             <div className="descripcion">
-                <p className="nombre">{descripcion}</p>
-                <p className="timestamp">{ fechaFormat }</p>
+                <p className="nombre">{usuario.name} : {descripcion}</p>
+                <p className="timestamp">{ icon }</p>
             </div>
         </li>
     )

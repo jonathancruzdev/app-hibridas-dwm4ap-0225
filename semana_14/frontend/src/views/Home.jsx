@@ -1,26 +1,41 @@
 import Tareas from "../components/Tareas"
 import Tarea from "../components/Tarea"
 import Loading from "../components/Loading"
-
-import { useState, useEffect, use } from 'react'
+import { AuthContext } from "../context/AuthContext"
+import { useState, useEffect, useContext } from 'react'
 
 
 const Home = () => {
 
-    const api = 'http://localhost:5000/api';
-    const endPoint = `${api}/task`;
+  const api = 'http://localhost:5000/api';
+  const endPoint = `${api}/task`;
 
-  // setInterval( () => {  }, 1000);
+  const { token } = useContext(AuthContext);
+  
   useEffect( () =>  {
     getTasks();
   }, [] );
 
   const getTasks = async () => {
     try {
-      const resp = await fetch(endPoint);
+      console.log( token)
+      const option = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token }`
+        }
+      }
+      const resp = await fetch(endPoint, option);
+      console.log(resp);
+
       const data = await resp.json();
-      console.log( data );
-      setTareas( data.data  );
+      if( resp.ok) {
+        console.log( data );
+        setTareas( data.data  );
+      }else {
+        setTareas([]);
+      }
+
       setLoading(false);
       
     } catch (error) {
@@ -81,7 +96,7 @@ const Home = () => {
         </form>
         <Tareas>
           {
-            tareas.map( ( item) =>  <Tarea key={item._id} descripcion={item.descripcion} fecha={item.fecha} />)
+            tareas.map( ( item) =>  <Tarea key={item._id} descripcion={item.description} completada={item.completed} usuario={ item.user} />)
           }
         </Tareas>
         <h2>Tareas Pendientes <span> { tareas.length }</span></h2>

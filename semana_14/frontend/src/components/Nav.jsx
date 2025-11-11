@@ -18,7 +18,7 @@ const Nav = ({usuario, children}) => {
                 <li> <NavLink to='/register'>Registro</NavLink></li>
             </ul>
             <div className="user-info">
-                <p>{ user.name }</p>
+                <p>{ user?.name }</p>
                 <div className="user-image"></div>
                 <button onClick={ logout } >Cerrar Sesión</button>
             </div>
