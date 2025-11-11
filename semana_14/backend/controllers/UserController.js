@@ -84,7 +84,9 @@ const auth = async(request, response) => {
     
     const data = {
         id: usuario._id,
-        email: usuario.email
+        name: usuario.name,
+        email: usuario.email,
+        rol: usuario.rol
     };
 
     const jwt = jsonwebtoken.sign( data, SECRET_KEY, { expiresIn: '1h'});

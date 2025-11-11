@@ -12,13 +12,14 @@ const validarToken = ( req, res, next) => {
 
     try {
         const jwt = token.startsWith('Bearer') ? token.slice(7) : null;
-        //console.log(jwt);
         jsonwebtoken.verify( jwt, SECRET_KEY, ( error, decoded ) => {
             if( error){ // Si no se verifica
                 res.status(403).json({msg:"Token invalido"})
             }
-            //console.log( {decoded} );
-            req.user = { _id: decoded.id };
+            req.user = { 
+                _id: decoded.id,
+                rol: decoded.rol
+            };
         })
         next();
     } catch (error) {

@@ -2,8 +2,32 @@ import Task from "../models/TaskModel.js";
 
 const getTask = async (req, res) => {
     try {
-        const tasks = await Task.find().populate('user');
+        const { _id, rol } = req.user;
+      
+        const filter = rol == 'admin' ? {} : { user: _id };
+        const tasks = await Task.find( filter ).populate('user', 'name');
         res.status(200).json({ msg: "Ok", data: tasks});
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error al obtener las tareas", data: []});
+    }
+}
+
+
+const getTaskById = async (req, res) => {
+    try {
+        const _id  = req.params.id; 
+        const rol = req.user.rol;
+        const idUser = req.user._id;
+        
+        const filter = rol == 'admin' ? { _id} : { _id,  user: idUser };
+        const task = await Task.findOne( filter ).populate('user', 'name');
+        if( task) {
+            res.status(200).json({ msg: "Ok", data: task});
+        } else {
+            res.status(404).json({ msg: "No existe la tarea", data: {} });
+        }
 
     } catch (error) {
         console.error(error);
@@ -49,4 +73,4 @@ const deleteTask = async(req, res) => {
     }
 }
 
-export { getTask, postTask, putTask, deleteTask }
+export { getTask, getTaskById, postTask, putTask, deleteTask }

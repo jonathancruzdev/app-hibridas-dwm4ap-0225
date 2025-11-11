@@ -1,24 +1,42 @@
-import { useState, createContext } from "react";
-
+import { useState, useEffect, createContext } from "react";
+import { jwtDecode } from "jwt-decode";
 // Creamos el contexto
 const AuthContext = createContext(); 
 // Definimos el Provider del contexto
 const AuthProvider = ( { children }) =>{
-    const [ user, setUser] = useState({name: '', avatar: ''});
-    const [ token, setToken] = useState( null );
+    const [ user, setUser] = useState(null);
+    const [ token, setToken] = useState(null);
+    // Decodificamos el token
+    useEffect( () => {
+        if( token){
+            try {
+                const decoded = jwtDecode( token);
+                console.log( decoded);
+                setUser( decoded )
+            } catch (error) {
+                console.error('Token invalido', error);
+                setUser(null);
+            }
+        } else {
+            setUser(null);
+        }
+    }, [ token ] )
 
     const login = (token) => {
         console.log('Login desde el Context');
         setToken( token );
+        localStorage.setItem('jwt', token);
     }
 
     const logout = () =>{
         console.log('logout desde el context');
         setToken(null);
+        setUser(null);
+        localStorage.removeItem('jwt');
     }
 
     return (
-        <AuthContext.Provider value={ { user, token, login } }>
+        <AuthContext.Provider value={ { user, token, login, logout } }>
             { children }
         </AuthContext.Provider>
     )
